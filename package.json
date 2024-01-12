@@ -1,0 +1,23 @@
+{
+  "name": "rxjs-ejemplos",
+  "version": "1.0.0",
+  "description": "Un proyecto con algunos ejemplos de uso de RxJS 6",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rxjs",
+    "examples",
+    "spanish"
+  ],
+  "author": "bglamadrid",
+  "license": "MIT",
+  "dependencies": {
+    "rxjs": "^6.6.7"
+  },
+  "devDependencies": {
+    "@tsconfig/node14": "^14.1.0",
+    "typescript": "^5.3.3"
+  }
+}
