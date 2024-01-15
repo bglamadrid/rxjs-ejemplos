@@ -2,7 +2,7 @@
   "name": "rxjs-ejemplos",
   "version": "1.0.0",
   "description": "Un proyecto con algunos ejemplos de uso de RxJS 6",
-  "main": "src/index.js",
+  "main": "./index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
