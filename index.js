@@ -6,7 +6,7 @@ const EJEMPLOS = require('./lib');
 console.log('EJEMPLO 1 "Reloj 60 segundos"');
 
 concat(
-    EJEMPLOS.cuentaHasta(30).pipe(
+    EJEMPLOS.cuentaSegundosHasta(10).pipe(
         takeUntil(EJEMPLOS.alPresionarUnaTecla()),
         tap({
             complete: () => {

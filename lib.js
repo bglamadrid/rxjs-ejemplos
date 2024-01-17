@@ -3,9 +3,9 @@ const { ajax } = require('rxjs/ajax');
 const { tap, takeWhile, delay, repeat, map } = require('rxjs/operators');
 
 /**
- * Observable simple
+ * Observable de cuenta simple.
  */
-function cuentaHasta(z) {
+function cuentaSegundosHasta(z) {
     return interval(1000).pipe(
         takeWhile(x => (x < z)),
         map(x => {
