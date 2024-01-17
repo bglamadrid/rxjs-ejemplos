@@ -52,7 +52,7 @@ function semaforo() {
     const rojo$ = of('rojo');
     const verde$ = of('verde');
     const amarillo$ = of('amarillo');
-    const escalaTiempo = 0.1;
+    const escalaTiempo = 0.2;
     return concat(
         verde$,
         concat(
@@ -105,7 +105,8 @@ function alPresionarUnaTecla() {
 }
 
 module.exports = {
-    cuentaHasta,
+    cuentaSegundosHasta,
+    cronometroPersonalizable,
     conversionHorariaDesdeApi,
     alPresionarUnaTecla,
     semaforo
