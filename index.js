@@ -1,45 +1,40 @@
-const { concat } = require('rxjs');
-const { takeUntil, tap, ignoreElements } = require('rxjs/operators');
+const { concat, of } = require('rxjs');
+const { takeUntil, tap, ignoreElements, filter } = require('rxjs/operators');
 const EJEMPLOS = require('./lib');
 
-
-console.log('EJEMPLO 1 "Reloj 60 segundos"');
+// refactorizacion de sintaxis repetitiva
+const concluirRedactando = (mensaje) => tap({ complete: () => console.log(mensaje) });
+const hastaPresionarUnaTecla = () => takeUntil(EJEMPLOS.alPresionarUnaTecla());
 
 concat(
+    of().pipe(
+        concluirRedactando('EJEMPLO 1 "Reloj 60 segundos"')
+    ),
     EJEMPLOS.cuentaSegundosHasta(10).pipe(
-        takeUntil(EJEMPLOS.alPresionarUnaTecla()),
-        tap({
-            complete: () => {
-                console.log('EJEMPLO 1 "Cuenta segundos" terminado');
-                console.log('EJEMPLO 2 "Cronometro personalizado"');
-            }
-        })
+        hastaPresionarUnaTecla(),
+        concluirRedactando('EJEMPLO 1 "Cuenta segundos" terminado'),
+        concluirRedactando('EJEMPLO 2 "Cronometro personalizado"')
     ),
     EJEMPLOS.cronometroPersonalizable({
-        limiteConteo: 11,
+        limiteConteo: 7,
         intervaloActualizacionMs: 1350,
         tipoPlantilla: 'difusa'
     }).pipe(
-        takeUntil(EJEMPLOS.alPresionarUnaTecla()),
-        tap({
-            complete: () => {
-                console.log('EJEMPLO 2 "Cronometro personalizado" terminado');
-                console.log('EJEMPLO 3 "Semaforo"');
-            }
-        })
+        hastaPresionarUnaTecla(),
+        concluirRedactando('EJEMPLO 2 "Cronometro personalizado" terminado'),
+        concluirRedactando('EJEMPLO 3 "Semaforo"')
     ),
     // EJEMPLOS.conversionHorariaDesdeApi().pipe(
     //     takeLast(1),
-    //     tap({ complete: () => console.log('EJEMPLO 2 "Conversion horaria desde API" terminado') })
+    //     concluirRedactando('EJEMPLO 2 "Conversion horaria desde API" terminado')
     // ),
     EJEMPLOS.semaforo().pipe(
-        takeUntil(EJEMPLOS.alPresionarUnaTecla()),
-        tap({ complete: () => console.log('EJEMPLO 3 "Semaforo" terminado') })
+        hastaPresionarUnaTecla(),
+        concluirRedactando('EJEMPLO 3 "Semaforo" terminado')
     )
 ).pipe(
-    tap({
-        next: (data) => console.log(data),
-        complete: () => console.log('FIN')
-    }),
+    filter(data => !!data),
+    tap((data) => console.log(data)),
+    concluirRedactando('FIN'),
     ignoreElements()
 ).subscribe();
