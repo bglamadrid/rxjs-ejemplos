@@ -11,6 +11,19 @@ concat(
         tap({
             complete: () => {
                 console.log('EJEMPLO 1 "Cuenta segundos" terminado');
+                console.log('EJEMPLO 2 "Cronometro personalizado"');
+            }
+        })
+    ),
+    EJEMPLOS.cronometroPersonalizable({
+        limiteConteo: 11,
+        intervaloActualizacionMs: 1350,
+        tipoPlantilla: 'difusa'
+    }).pipe(
+        takeUntil(EJEMPLOS.alPresionarUnaTecla()),
+        tap({
+            complete: () => {
+                console.log('EJEMPLO 2 "Cronometro personalizado" terminado');
                 console.log('EJEMPLO 3 "Semaforo"');
             }
         })

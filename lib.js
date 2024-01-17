@@ -15,6 +15,39 @@ function cuentaHasta(z) {
     );
 }
 
+/**
+ * Observable de cuenta con opciones extendidas.
+ * Su unico parametro es un objeto que debe contener estas propiedades:
+ *
+ * - `limiteConteo`: `number` debe ser mayor a 0
+ * - `intervaloActualizacionMs`: `number` debe ser mayor a 0
+ * - `tipoPlantilla`: `difusa` | `lcd`
+ */
+function cronometroPersonalizable({ limiteConteo, intervaloActualizacionMs, tipoPlantilla }) {
+    const rellenarFn = (n) => (n < 9 ? `0${n}` : n);
+    const plantillaFn = {
+        'difusa': (x) => (x.esSingular ? 'Ha pasado 1 segundo' : `Han pasado ${x.totalDecimasSegundos / 10} segundos`),
+        'lcd': (x) => {
+            const totalSegundos = Math.floor(x.totalDecimasSegundos / 10);
+            const horas = Math.floor(totalSegundos / 3600);
+            const minutos = Math.max((Math.floor(totalSegundos / 60) - (horas * 60)), 0);
+            const segundos = Math.max((totalSegundos - (minutos * 60) - (horas * 3600)), 0);
+            const decimas = Math.max((x.totalDecimasSegundos - (minutos * 60) - (horas * 3600)), 0);
+            return `${rellenarFn(horas)}:${rellenarFn(minutos)}:${rellenarFn(segundos)}:${decimas}`;
+        }
+    }[tipoPlantilla];
+    return interval(intervaloActualizacionMs).pipe(
+        takeWhile(x => (x < limiteConteo)),
+        map(x => (intervaloActualizacionMs * x)),
+        map(tiempoTotalMs => Math.round(tiempoTotalMs / 100)),
+        map(totalDecimasSegundos => ({
+            totalDecimasSegundos,
+            esSingular: totalDecimasSegundos === 10
+        })),
+        map(x => plantillaFn(x))
+    );
+}
+
 function semaforo() {
     const rojo$ = of('rojo');
     const verde$ = of('verde');
